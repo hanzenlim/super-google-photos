@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/hanzenlim/super-google-photos#readme",
   "devDependencies": {
+    "serverless": "^1.71.3",
     "serverless-offline": "^6.1.7"
   },
   "dependencies": {
