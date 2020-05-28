@@ -13,5 +13,11 @@ functions:
       - http:
           path: ping
           method: get
+  savePictures:
+    handler: handler.savePictures
+    events:
+      - http:
+          path: save/pictures
+          method: get
 plugins:
   - serverless-offline
