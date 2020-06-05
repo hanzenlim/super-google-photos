@@ -4,7 +4,8 @@
   "description": "",
   "main": "handler.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dynamo-viewer": "DYNAMO_ENDPOINT=http://localhost:8000 dynamodb-admin"
   },
   "repository": {
     "type": "git",
@@ -17,10 +18,13 @@
   },
   "homepage": "https://github.com/hanzenlim/super-google-photos#readme",
   "devDependencies": {
+    "dynamodb-admin": "^4.0.0",
     "serverless": "^1.71.3",
+    "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^5.12.1"
   },
   "dependencies": {
-    "aws-sdk": "^2.683.0"
+    "aws-sdk": "^2.683.0",
+    "uuid": "^8.1.0"
   }
 }
