@@ -24,6 +24,7 @@
     "serverless-offline": "^5.12.1"
   },
   "dependencies": {
+    "algoliasearch": "^4.3.0",
     "aws-sdk": "^2.683.0",
     "uuid": "^8.1.0"
   }

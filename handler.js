@@ -2,10 +2,15 @@
 const AWS = require("aws-sdk");
 const uuid = require("uuid");
 const dynamodb = require("./dynamodb");
+const algoliasearch = require("algoliasearch");
 
-// const savePictures = require("./savePictures");
+const client = algoliasearch("M2IPRGF51C", "779178baf0193e33a07920ff67d89928");
+const index = client.initIndex("google_photos");
 
-module.exports.endpoint = (event, context, callback) => {
+module.exports.analyzeimage = (event, context, callback) => {
+  const imageUrl = event.queryStringParameters.imageUrl;
+
+
   var textract = new AWS.Textract();
 
   var params = {
@@ -19,20 +24,8 @@ module.exports.endpoint = (event, context, callback) => {
       },
     },
     FeatureTypes: [
-      /* required */
       "FORMS",
-      /* more items */
     ],
-    // HumanLoopConfig: {
-    //   FlowDefinitionArn: 'STRING_VALUE', /* required */
-    //   HumanLoopName: 'STRING_VALUE', /* required */
-    //   DataAttributes: {
-    //     ContentClassifiers: [
-    //       FreeOfPersonallyIdentifiableInformation | FreeOfAdultContent,
-    //       /* more items */
-    //     ]
-    //   }
-    // }
   };
 
   textract.analyzeDocument(params, function (err, data) {
@@ -57,57 +50,51 @@ module.exports.endpoint = (event, context, callback) => {
         }),
       };
 
+
+      function sendtoAlgolia(tags);
+
+
       callback(null, response);
     } // successful response
   });
 };
 
-module.exports.savePictures = (event, context, callback) => {
-  const body = JSON.parse(event.body);
-  const images = body.images;
+module.exports.uploadToAlgolia = (event, context, callback) => {
+  const id = "IMG_394343.jpg";
 
-  // save to DB
-  const timestamp = new Date().getTime();
-  const data = images;
-  // if (typeof data.text !== 'string') {
-  //   console.error('Validation Failed');
-  //   callback(null, {
-  //     statusCode: 400,
-  //     headers: { 'Content-Type': 'text/plain' },
-  //     body: 'Couldn\'t create the todo item.',
-  //   });
-  //   return;
-  // }
-
-  const params = {
-    TableName: process.env.DYNAMODB_TABLE,
-    Item: {
-      id: uuid.v1(),
-      text: data,
-      checked: false,
-      createdAt: timestamp,
-      updatedAt: timestamp,
-    },
+  const myObj = {
+    objectID: id,
+    imageUrl: "https://s3.amazon.com/IMG_394343.jpg",
+    tags: ["Princeton", "International"],
   };
 
-  // write the todo to the database
-  dynamodb.put(params, (error) => {
-    // handle potential errors
-    if (error) {
-      console.error(error);
-      callback(null, {
-        statusCode: error.statusCode || 501,
-        headers: { "Content-Type": "text/plain" },
-        body: "Couldn't create the todo item.",
-      });
-      return;
-    }
+  index.saveObject(myObj).then((data) => {
+    console.log(data);
 
-    // create a response
     const response = {
       statusCode: 200,
-      body: JSON.stringify(params.Item),
+      body: JSON.stringify({
+        message: data,
+      }),
     };
+
+    callback(null, response);
+  });
+};
+
+module.exports.searchAlgolia = (event, context, callback) => {
+  // only query string
+  console.log("event::", event);
+  const query = event.queryStringParameters.query;
+
+  index.search(query).then(({ hits }) => {
+    const response = {
+      statusCode: 200,
+      body: JSON.stringify({
+        message: hits,
+      }),
+    };
+
     callback(null, response);
   });
 };

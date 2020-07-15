@@ -20,17 +20,23 @@ provider:
 
 functions:
   currentTime:
-    handler: handler.endpoint
+    handler: handler.analyzeimage
     events:
       - http:
-          path: ping
+          path: analyzeimage
           method: get
-  savePictures:
-    handler: handler.savePictures
+  searchAlgolia:
+    handler: handler.searchAlgolia
     events:
       - http:
-          path: save/pictures
-          method: post
+          path: searchalgolia
+          method: get
+  uploadToAlgolia:
+    handler: handler.uploadToAlgolia
+    events:
+      - http:
+          path: uploadalgolia
+          method: get
 plugins:
   - serverless-offline
   - serverless-dynamodb-local
