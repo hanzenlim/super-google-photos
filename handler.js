@@ -10,7 +10,6 @@ const index = client.initIndex("google_photos");
 module.exports.analyzeimage = (event, context, callback) => {
   const imageUrl = event.queryStringParameters.imageUrl;
 
-
   var textract = new AWS.Textract();
 
   var params = {
@@ -23,9 +22,7 @@ module.exports.analyzeimage = (event, context, callback) => {
         // Version: 'STRING_VALUE'
       },
     },
-    FeatureTypes: [
-      "FORMS",
-    ],
+    FeatureTypes: ["FORMS"],
   };
 
   textract.analyzeDocument(params, function (err, data) {
@@ -49,10 +46,6 @@ module.exports.analyzeimage = (event, context, callback) => {
           message: textArr,
         }),
       };
-
-
-      function sendtoAlgolia(tags);
-
 
       callback(null, response);
     } // successful response
