@@ -25,7 +25,7 @@
   },
   "dependencies": {
     "algoliasearch": "^4.3.0",
-    "aws-sdk": "^2.683.0",
+    "aws-sdk": "^2.814.0",
     "uuid": "^8.1.0"
   }
 }
