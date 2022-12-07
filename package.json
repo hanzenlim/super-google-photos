@@ -19,7 +19,7 @@
   "homepage": "https://github.com/hanzenlim/super-google-photos#readme",
   "devDependencies": {
     "dynamodb-admin": "^4.0.0",
-    "serverless": "^1.71.3",
+    "serverless": "^3.25.1",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-offline": "^5.12.1"
   },
